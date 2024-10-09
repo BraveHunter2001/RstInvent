@@ -1,0 +1,110 @@
+﻿<Window x:Class="RstInvent.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModel="clr-namespace:RstInvent.ViewModel"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <viewModel:AppViewModel />
+    </Window.DataContext>
+    <Grid>
+        <TabControl>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock>Приемка-Отгрузка</TextBlock>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="100 25">
+                            <Label Content="Поле ввода данных для приема" />
+                            <TextBox x:Name="SearchReceiver">
+                                <TextBox.InputBindings>
+                                    <KeyBinding Command="{Binding Path=GetReceiverNum}"
+                                                CommandParameter="{Binding ElementName=SearchReceiver, Path=Text}"
+                                                Key="Enter" />
+                                </TextBox.InputBindings>
+                            </TextBox>
+                        </StackPanel>
+                        <StackPanel
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="100 25">
+                            <Label Content="Поле ввода данных для отгрузки" />
+                            <TextBox x:Name="SearchShipment">
+                                <TextBox.InputBindings>
+                                    <KeyBinding Command="{Binding Path=GetShipmentNum}"
+                                                CommandParameter="{Binding ElementName=SearchShipment, Path=Text}"
+                                                Key="Enter" />
+                                </TextBox.InputBindings>
+                            </TextBox>
+                        </StackPanel>
+                        <DataGrid
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Margin="25"
+                            AutoGenerateColumns="False"
+                            IsReadOnly="True"
+                            ItemsSource="{Binding ReceiverGroups}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Наименование" Binding="{Binding Name}" />
+                                <DataGridTextColumn Header="Количество" Binding="{Binding Count}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <DataGrid
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="25"
+                            AutoGenerateColumns="False"
+                            IsReadOnly="True"
+                            ItemsSource="{Binding ShipmentGroups}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Наименование" Binding="{Binding Name}" />
+                                <DataGridTextColumn Header="Количество" Binding="{Binding Count}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Button
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            VerticalAlignment="Bottom"
+                            Margin="100 20"
+                            Content="Очистить"
+                            Command="{Binding Clear}" />
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock>Справочник номенклатуры</TextBlock>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <StackPanel>
+                        <StackPanel Width="300">
+                            <Label Content="Name:" />
+                            <TextBox x:Name="NewNomenclatureEntityName" />
+                            <Button Content="ADD" Command="{Binding AddNum}"
+                                    CommandParameter="{Binding  ElementName=NewNomenclatureEntityName, Path=Text}" />
+                        </StackPanel>
+                        <DataGrid
+                            AutoGenerateColumns="True"
+                            ItemsSource="{Binding Nomenclatures}" IsReadOnly="true">
+                        </DataGrid>
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
